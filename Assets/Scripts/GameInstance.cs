@@ -20,15 +20,17 @@ public class GameInstance : MonoBehaviour
 		}
 	}
 
-	public event Action<int> GoldChanged; //event tanýmladýk.
-
+	public event Action<int> GoldChanged;
+	public event Action<int> LevelChanged;
 	public event Action GameStarted;
 	public event Action GameEnded;
 	public event Action Won;
 	public event Action Lost;
 
-    public bool IsGameStarted { get; private set; }
-    public void StartGame()
+
+	public bool IsGameStarted { get; private set; }
+	
+	public void StartGame()
 	{
 		IsGameStarted = true;
 		GameStarted?.Invoke();
@@ -40,9 +42,14 @@ public class GameInstance : MonoBehaviour
 		GameEnded?.Invoke();
 	}
 
+	/*
+	 get 
+	 {
+		return _gold;
+	 }
+	 */
 	private int _gold;
-	
-	public int Gold 
+	public int Gold
 	{
 		get => _gold;
 		set
@@ -50,16 +57,25 @@ public class GameInstance : MonoBehaviour
 			_gold = value;
 			GoldChanged?.Invoke(_gold);
 		}
-
 	}
-	public int Level { get; set; }
+	// public int Gold { get; set; }
+	private int _level;
+	public int Level
+	{
+		get => _level;
+		set
+		{
+			_level = value;
+			LevelChanged?.Invoke(_level);
+		}
+	}
 
 	public void Win()
 	{
 		Level++;
-		SceneManager.LoadScene(0);
 
 		EndGame();
+		
 		Won?.Invoke();
 	}
 
@@ -67,6 +83,8 @@ public class GameInstance : MonoBehaviour
 	{
 		// TODO Show lose screen
 		Debug.Log("Lost!");
+		
+		EndGame();
 		
 		Lost?.Invoke();
 	}

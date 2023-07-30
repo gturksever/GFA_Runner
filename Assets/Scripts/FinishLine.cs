@@ -12,5 +12,4 @@ public class FinishLine : MonoBehaviour
 			GameInstance.Instance.Win();
 		}
 	}
-	
 }
